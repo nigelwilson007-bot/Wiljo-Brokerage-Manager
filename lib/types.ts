@@ -85,3 +85,40 @@ export interface ListingDocument {
   uploadedDate: string; // ISO date
   sizeKb: number;
 }
+
+// ── Leads (CRM) ─────────────────────────────────────────────────────────
+// Captured from the public website's "List Your Property" form, the
+// buyer/tenant enquiry form, and the chatbot widget. See
+// app/api/leads/route.ts for how these get created, and
+// SETUP_LEADS_CRM.md for what needs to be configured before leads actually
+// flow in from the live site.
+
+export type LeadSource =
+  | "website-list-with-us" // seller/landlord submitted the "List Your Property" form
+  | "website-enquiry" // buyer/tenant submitted the general enquiry form
+  | "website-chatbot" // captured via the chatbot widget
+  | "whatsapp"
+  | "phone"
+  | "referral"
+  | "other";
+
+export type LeadStatus = "new" | "contacted" | "qualified" | "converted" | "lost";
+
+export type LeadIntent = "sell" | "lease" | "buy" | "rent" | "unsure";
+
+export interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  source: LeadSource;
+  status: LeadStatus;
+  intent: LeadIntent | null;
+  propertyType: PropertyType | null;
+  interest: string | null; // free text — e.g. "Darrel Spring listing" or property they're offering
+  location: string | null; // property location (sellers) or client's country (buyers)
+  budgetOrPrice: string | null; // free text, e.g. "TT$1.5M" or "TT$4,500/mo"
+  message: string | null;
+  receivedDate: string; // ISO date-time
+  assignedAgentId: string | null;
+}

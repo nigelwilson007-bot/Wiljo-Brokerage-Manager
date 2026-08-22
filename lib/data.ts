@@ -1,4 +1,4 @@
-import { Listing, CommissionInvoice, ListingDocument, Agent, Client } from "./types";
+import { Listing, CommissionInvoice, ListingDocument, Agent, Client, Lead } from "./types";
 
 // ── Agents (your team) ──────────────────────────────────────────────────
 export const agents: Agent[] = [
@@ -106,6 +106,31 @@ export const documents: ListingDocument[] = [
   { id: "d4", listingId: "l3", name: "Sample — Title Deed.pdf", type: "title-deed", uploadedDate: "2026-02-01", sizeKb: 960 },
 ];
 
+// ── Leads (CRM) ──────────────────────────────────────────────────────────
+// This static array is only a fallback/demo view. Once you connect Vercel KV
+// (see SETUP_LEADS_CRM.md), live leads captured from the website are read
+// from KV at request time in app/leads/page.tsx and this array is ignored.
+// It exists so the Leads page still shows something sensible before KV is
+// configured, and so the shape of a lead is obvious for local development.
+export const leads: Lead[] = [
+  {
+    id: "demo-1",
+    name: "Sample Lead — Jordan Ramnarine",
+    email: "jordan.sample@example.com",
+    phone: "1-868-555-0100",
+    source: "website-enquiry",
+    status: "new",
+    intent: "buy",
+    propertyType: "commercial",
+    interest: "Darrel Spring listing",
+    location: "Canada",
+    budgetOrPrice: "TT$3,000,000 – 3,300,000",
+    message: "This is placeholder data — remove once real leads start arriving via the website.",
+    receivedDate: "2026-08-01T14:30:00.000Z",
+    assignedAgentId: "a1",
+  },
+];
+
 // ── Helpers ──────────────────────────────────────────────────────────────
 export function getListing(id: string): Listing | undefined {
   return listings.find((l) => l.id === id);
@@ -127,6 +152,12 @@ export function getDocumentsForListing(listingId: string): ListingDocument[] {
   return documents.filter((d) => d.listingId === listingId);
 }
 
+export function getLeadsSorted(source: Lead[] = leads): Lead[] {
+  return [...source].sort(
+    (a, b) => new Date(b.receivedDate).getTime() - new Date(a.receivedDate).getTime()
+  );
+}
+
 export function formatCurrency(n: number): string {
   return new Intl.NumberFormat("en-TT", {
     style: "currency",
@@ -140,5 +171,15 @@ export function formatDate(iso: string): string {
     day: "2-digit",
     month: "short",
     year: "numeric",
+  });
+}
+
+export function formatDateTime(iso: string): string {
+  return new Date(iso).toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
