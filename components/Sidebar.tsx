@@ -7,6 +7,7 @@ import Image from "next/image";
 const navItems = [
   { href: "/", label: "Overview", icon: "grid" },
   { href: "/listings", label: "Listings", icon: "building" },
+  { href: "/leads", label: "Leads", icon: "users" },
   { href: "/commission", label: "Commission", icon: "receipt" },
   { href: "/documents", label: "Documents", icon: "file" },
 ];
@@ -37,6 +38,15 @@ function Icon({ name }: { name: string }) {
         <svg {...common}>
           <rect x="4" y="3" width="16" height="18" rx="1" />
           <path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1" />
+        </svg>
+      );
+    case "users":
+      return (
+        <svg {...common}>
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+          <circle cx="17" cy="8" r="2.5" />
+          <path d="M21 20c0-2.6-1.8-4.8-4.2-5.6" />
         </svg>
       );
     case "receipt":

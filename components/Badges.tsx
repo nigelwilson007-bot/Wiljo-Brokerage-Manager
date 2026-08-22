@@ -1,4 +1,4 @@
-import { ListingStatus, InvoiceStatus, ListingKind } from "@/lib/types";
+import { ListingStatus, InvoiceStatus, ListingKind, LeadStatus, LeadSource } from "@/lib/types";
 
 const listingStatusStyles: Record<ListingStatus, string> = {
   active: "bg-primary-light text-primary-dark",
@@ -62,6 +62,51 @@ export function FolioTag({ folio }: { folio: string }) {
   return (
     <span className="font-data text-[11px] tracking-tight text-inkmuted">
       {folio}
+    </span>
+  );
+}
+
+// ── Leads ──────────────────────────────────────────────────────────────
+const leadStatusStyles: Record<LeadStatus, string> = {
+  new: "bg-signal-light text-signal",
+  contacted: "bg-gold-light text-gold",
+  qualified: "bg-primary-light text-primary-dark",
+  converted: "bg-primary-light text-primary-dark",
+  lost: "bg-bg text-inkmuted",
+};
+
+const leadStatusLabel: Record<LeadStatus, string> = {
+  new: "New",
+  contacted: "Contacted",
+  qualified: "Qualified",
+  converted: "Converted",
+  lost: "Lost",
+};
+
+export function LeadStatusBadge({ status }: { status: LeadStatus }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${leadStatusStyles[status]}`}
+    >
+      {leadStatusLabel[status]}
+    </span>
+  );
+}
+
+const leadSourceLabel: Record<LeadSource, string> = {
+  "website-list-with-us": "Website — List With Us",
+  "website-enquiry": "Website — Enquiry",
+  "website-chatbot": "Website — Chatbot",
+  whatsapp: "WhatsApp",
+  phone: "Phone",
+  referral: "Referral",
+  other: "Other",
+};
+
+export function LeadSourceTag({ source }: { source: LeadSource }) {
+  return (
+    <span className="inline-flex items-center rounded-full bg-bg px-2.5 py-0.5 text-xs font-medium text-inkmuted">
+      {leadSourceLabel[source]}
     </span>
   );
 }
